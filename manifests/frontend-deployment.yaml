@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-deployment
+  namespace: hopegiversbloodbank
 spec:
   replicas:  2
   selector:
@@ -13,6 +14,7 @@ spec:
       labels:
         app: frontend
     spec:
+      serviceAccountName: frontend-sa
       initContainers:
         - name: wait-for-db
           image: busybox:1.38
@@ -29,6 +31,9 @@ spec:
           image: manju9676/hopegiversbloodbank-frontend:latest
           ports:
             - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: app-config
           livenessProbe:
             httpGet:
               path: /

@@ -1,0 +1,25 @@
+---
+# Pod Disruption Budget for Frontend (maintain 1 replica available)
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: frontend-pdb
+  namespace: hopegiversbloodbank
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: frontend
+
+---
+# Pod Disruption Budget for Database (maintain 1 replica available)
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: database-pdb
+  namespace: hopegiversbloodbank
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: database

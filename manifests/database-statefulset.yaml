@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet 
 metadata:
   name: database-statefulset
+  namespace: hopegiversbloodbank
 spec:
   serviceName: mysqldb
   replicas: 2
@@ -13,6 +14,7 @@ spec:
       labels:
         app: database
     spec:
+      serviceAccountName: database-sa
       containers:
         - image: manju9676/hopegiversbloodbank-database:latest
           name: mysql
