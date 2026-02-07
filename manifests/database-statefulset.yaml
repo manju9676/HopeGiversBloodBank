@@ -39,7 +39,7 @@ spec:
                 - /bin/sh
                 - -c
                 - mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
@@ -49,9 +49,9 @@ spec:
                 - /bin/sh
                 - -c
                 - mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 3
+            initialDelaySeconds: 240
+            periodSeconds: 30
+            timeoutSeconds: 10
             failureThreshold: 2
           volumeMounts:
             - name: mysql-pvc
