@@ -14,8 +14,8 @@ spec:
         app: database
     spec:
       containers:
-        - image: mysql:8.0
-          name: manju9676/hopegiversbloodbank-database:latest
+        - image: manju9676/hopegiversbloodbank-database:latest
+          name: mysql
           ports:
             - containerPort: 3306 
           env:
@@ -28,6 +28,9 @@ spec:
             requests:
               memory: "256Mi" 
               cpu: "250m"
+          volumeMounts:
+            - name: mysql-pvc
+              mountPath: /var/lib/mysql
   volumeClaimTemplates:
     - metadata:
         name: mysql-pvc
