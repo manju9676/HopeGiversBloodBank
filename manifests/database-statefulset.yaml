@@ -16,7 +16,7 @@ spec:
     spec:
       serviceAccountName: database-sa
       containers:
-        - image: manju9676/hopegiversbloodbank-database:latest
+        - image: manju9676/hopegiversbloodbank-database:30
           name: mysql
           ports:
             - containerPort: 3306 
