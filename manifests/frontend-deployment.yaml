@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas:  2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox:1.38
+          command: ['sh', '-c', 'until nc -z mysqldb 3306; do sleep 2; done;']
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+      containers:
+        - name: frontend
+          image: manju9676/hopegiversbloodbank-frontend:latest
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+                  

@@ -58,3 +58,25 @@ pipeline {
     }
 }
 }
+
+pipeline {
+    agent any
+    parameters {
+        string(name: 'DOCKER_REGISTRY', defaultValue: 'manju9676', description: 'Docker Hub Username')
+        string(name: 'GIT_BRANCH', defaultValue: 'main', description: 'Git Branch')
+    }
+    environment {
+        DOCKER_REGISTRY = "${params.DOCKER_REGISTRY}"
+        GIT_BRANCH = "${params.GIT_BRANCH}"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        SONAR_SERVER = 'mysonar'
+    }
+    stages {
+        stage('ImageTag') {
+            steps {
+                sh "docker tag frontend ${DOCKER_REGISTRY}/hopegiversbloodbank-frontend:${IMAGE_TAG}"
+                sh "docker tag database ${DOCKER_REGISTRY}/hopegiversbloodbank-database:${IMAGE_TAG}"
+            }
+        }
+    }
+}

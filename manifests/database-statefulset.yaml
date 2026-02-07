@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet 
+metadata:
+  name: database-statefulset
+spec:
+  serviceName: database-service
+  replicas: 2
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+        - image: mysql:8.0
+          name: manju9676/hopegiversbloodbank-database:latest
+          ports:
+            - containerPort: 3306 
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "admin123"
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m" 
+            requests:
+              memory: "256Mi" 
+              cpu: "250m"
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-pvc
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 2Gi
+  
+          
+      
