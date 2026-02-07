@@ -20,7 +20,10 @@ spec:
             - containerPort: 3306 
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: "admin123"
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
           resources:
             limits:
               memory: "512Mi"
@@ -28,6 +31,26 @@ spec:
             requests:
               memory: "256Mi" 
               cpu: "250m"
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
           volumeMounts:
             - name: mysql-pvc
               mountPath: /var/lib/mysql
@@ -35,6 +58,7 @@ spec:
     - metadata:
         name: mysql-pvc
       spec:
+        storageClassName: aws-ebs
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
