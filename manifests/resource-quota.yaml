@@ -13,11 +13,7 @@ spec:
     pods: "20"
     services: "10"
     persistentvolumeclaims: "5"
-  scopeSelector:
-    matchExpressions:
-      - operator: In
-        scopeName: PriorityClass
-        values: ["default", "system"]
+  # scopeSelector removed: unsupported in this cluster/version
 
 ---
 apiVersion: v1
