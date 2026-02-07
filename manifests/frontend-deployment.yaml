@@ -17,7 +17,7 @@ spec:
       serviceAccountName: frontend-sa
       initContainers:
         - name: wait-for-db
-          image: busybox:1.38
+          image: busybox:latest
           command: ['sh', '-c', 'until nc -z mysqldb 3306; do sleep 2; done;']
           resources:
             limits:
