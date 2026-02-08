@@ -31,9 +31,16 @@ spec:
           image: manju9676/hopegiversbloodbank-frontend:8
           ports:
             - containerPort: 80
+          startupProbe:
+            httpGet:
+              path: /health.php
+              port: 80
+            failureThreshold: 30
+            periodSeconds: 10
+
           livenessProbe:
             httpGet:
-              path: /
+              path: /health.php
               port: 80
             initialDelaySeconds: 20
             periodSeconds: 10
@@ -41,7 +48,7 @@ spec:
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /
+              path: /health.php
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 5
