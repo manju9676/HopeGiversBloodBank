@@ -1,38 +1,43 @@
 apiVersion: apps/v1
-kind: StatefulSet 
+kind: StatefulSet
 metadata:
-  name: database-statefulset
+  name: mysql
   namespace: hopegiversbloodbank
 spec:
   serviceName: mysqldb
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: database
+      app: mysql
   template:
     metadata:
       labels:
-        app: database
+        app: mysql
     spec:
-      serviceAccountName: database-sa
+      securityContext:
+        fsGroup: 999   # mysql group ID fixes volume permission issues
       containers:
-        - image: manju9676/hopegiversbloodbank-database:30
-          name: mysql
+        - name: mysql
+          image: manju9676/hopegiversbloodbank-database:30
           ports:
-            - containerPort: 3306 
+            - containerPort: 3306
+              name: mysql
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
                   key: MYSQL_ROOT_PASSWORD
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
           resources:
-            limits:
-              memory: "512Mi"
-              cpu: "500m" 
             requests:
-              memory: "256Mi" 
               cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
           livenessProbe:
             exec:
               command: ["mysqladmin", "ping", "-h", "127.0.0.1"]
@@ -43,9 +48,7 @@ spec:
               command: ["mysqladmin", "ping", "-h", "127.0.0.1"]
             initialDelaySeconds: 5
             periodSeconds: 10
-          volumeMounts:
-            - name: mysql-pvc
-              mountPath: /var/lib/mysql
+
   volumeClaimTemplates:
     - metadata:
         name: mysql-pvc
@@ -54,7 +57,4 @@ spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: 2Gi
-  
-          
-      
+            storage: 10Gi
