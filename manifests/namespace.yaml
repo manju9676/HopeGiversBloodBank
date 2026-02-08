@@ -3,7 +3,8 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: hopegiversbloodbank
-  argocd.argoproj.io/sync-wave: "-2"
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
   labels:
     app: hopegiversbloodbank
     environment: production
