@@ -18,7 +18,7 @@ spec:
         fsGroup: 999   # mysql group ID fixes volume permission issues
       containers:
         - name: mysql
-          image: manju9676/hopegiversbloodbank-database:7
+          image: manju9676/hopegiversbloodbank-database:8
           ports:
             - containerPort: 3306
               name: mysql
