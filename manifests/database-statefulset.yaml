@@ -35,24 +35,14 @@ spec:
               cpu: "250m"
           livenessProbe:
             exec:
-              command:
-                - /bin/sh
-                - -c
-                - mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}
-            initialDelaySeconds: 60
+              command: ["mysqladmin", "ping", "-h", "127.0.0.1"]
+            initialDelaySeconds: 30
             periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
           readinessProbe:
             exec:
-              command:
-                - /bin/sh
-                - -c
-                - mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}
-            initialDelaySeconds: 240
-            periodSeconds: 30
-            timeoutSeconds: 10
-            failureThreshold: 2
+              command: ["mysqladmin", "ping", "-h", "127.0.0.1"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
           volumeMounts:
             - name: mysql-pvc
               mountPath: /var/lib/mysql
