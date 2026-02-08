@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      name: mytemp
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: manju9676/hopegiversbloodbank-frontend:30
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi" 
+              cpu: "250m"

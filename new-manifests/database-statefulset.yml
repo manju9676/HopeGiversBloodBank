@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: database-ss
+spec:
+  replicas: 1
+  serviceName: mysqldb
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      name: temp1
+      labels:
+        app: database
+    spec:
+      containers:
+        - name: db
+          image: manju9676/hopegiversbloodbank-database:30
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: admin123
+
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-pvc
+      spec:
+        storageClassName: aws-ebs
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 2Gi
+
+
+
