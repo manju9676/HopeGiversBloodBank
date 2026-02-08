@@ -15,17 +15,17 @@ spec:
         app: frontend
     spec:
       serviceAccountName: frontend-sa
-      initContainers:
-        - name: wait-for-db
-          image: busybox:latest
-          command: ['sh', '-c', 'until nc -z mysqldb 3306; do sleep 2; done;']
-          resources:
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
-            requests:
-              memory: "200Mi"
-              cpu: "50m"
+      # initContainers:
+      #   - name: wait-for-db
+      #     image: busybox:latest
+      #     command: ['sh', '-c', 'until nc -z mysqldb 3306; do sleep 2; done;']
+      #     resources:
+      #       limits:
+      #         memory: "512Mi"
+      #         cpu: "500m"
+      #       requests:
+      #         memory: "200Mi"
+      #         cpu: "50m"
       containers:
         - name: frontend
           image: manju9676/hopegiversbloodbank-frontend:7
