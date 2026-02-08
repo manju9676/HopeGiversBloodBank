@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: bankapp-ingress
+  name: bb-ingress
   namespace: dev
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -17,3 +17,12 @@ spec:
             name: frontend-svc
             port:
               number: 80
+      - path: "/404"
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-svc
+            port:
+              number: 80
+    
+          
