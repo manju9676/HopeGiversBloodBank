@@ -31,6 +31,7 @@ spec:
           volumeMounts:
             - name: mysql-pvc
               mountPath: /var/lib/mysql
+              subPath: mysql-data
           resources:
             requests:
               cpu: "250m"

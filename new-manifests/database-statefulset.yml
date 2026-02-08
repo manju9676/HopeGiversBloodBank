@@ -19,6 +19,8 @@ spec:
       containers:
         - name: db
           image: manju9676/hopegiversbloodbank-database:30
+          securityContext:
+            fsGroup: 999
           ports:
             - containerPort: 3306
           env:
@@ -30,23 +32,20 @@ spec:
           volumeMounts:
             - name: mysql-pvc
               mountPath: /var/lib/mysql
-          # resources:
-          #   requests:
-          #     cpu: "250m"
-          #     memory: "512Mi"
-          #   limits:
-          #     cpu: "500m"
-          #     memory: "1Gi"
-          # livenessProbe:
-          #   exec:
-          #     command: ["mysqladmin", "ping", "-h", "localhost"]
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 10
-          # readinessProbe:
-          #   exec:
-          #     command: ["mysqladmin", "ping", "-h", "localhost"]
-          #   initialDelaySeconds: 50
-          #   periodSeconds: 10
+              subPath: mysql-data
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          readinessProbe:
+            exec:
+              command: ["mysqladmin", "ping", "-h", "127.0.0.1"]
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
 
 
   volumeClaimTemplates:
