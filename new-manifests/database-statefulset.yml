@@ -30,23 +30,23 @@ spec:
           volumeMounts:
             - name: mysql-pvc
               mountPath: /var/lib/mysql
-          resources:
-            requests:
-              cpu: "250m"
-              memory: "512Mi"
-            limits:
-              cpu: "500m"
-              memory: "1Gi"
-          livenessProbe:
-            exec:
-              command: ["mysqladmin", "ping", "-h", "localhost"]
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            exec:
-              command: ["mysqladmin", "ping", "-h", "localhost"]
-            initialDelaySeconds: 50
-            periodSeconds: 10
+          # resources:
+          #   requests:
+          #     cpu: "250m"
+          #     memory: "512Mi"
+          #   limits:
+          #     cpu: "500m"
+          #     memory: "1Gi"
+          # livenessProbe:
+          #   exec:
+          #     command: ["mysqladmin", "ping", "-h", "localhost"]
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          # readinessProbe:
+          #   exec:
+          #     command: ["mysqladmin", "ping", "-h", "localhost"]
+          #   initialDelaySeconds: 50
+          #   periodSeconds: 10
 
 
   volumeClaimTemplates:
