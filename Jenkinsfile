@@ -80,3 +80,67 @@ pipeline {
         }
     }
 }
+
+
+
+pipeline{
+    agent any
+    stages{
+        stage('Code') {
+            steps {
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/manju9676/HopeGiversBloodBank.git'
+            }
+        }
+        stage('ImageBuild'){
+             steps{
+                 sh 'docker build -t frontend .'
+                 sh 'docker build -t database ./database'
+             }
+         }
+         stage(ImageScan){
+            steps{
+                sh 'trivy image frontend'
+                sh 'trivy image database'
+            }
+        }
+        stage(ImageTag){
+            steps{
+                sh 'docker tag frontend manju9676/hopegiversbloodbank-frontend:$BUILD_NUMBER'
+                sh 'docker tag database manju9676/hopegiversbloodbank-database:$BUILD_NUMBER'
+            }
+        }
+        stage(ImagePush){
+            steps{
+                script{
+                    withDockerRegistry(credentialsId: 'docker-cred') {
+                    sh 'docker push manju9676/hopegiversbloodbank-frontend:$BUILD_NUMBER'
+                    sh 'docker push manju9676/hopegiversbloodbank-database:$BUILD_NUMBER'
+                    }
+                }
+            }
+        }
+        stage('UpdateImagetagestag') {
+            steps {
+                sh "sed -i 's/hopegiversbloodbank-frontend:.*/hopegiversbloodbank-frontend:${BUILD_NUMBER}/g' manifests/frontend-deployment.yaml"
+                sh "sed -i 's/hopegiversbloodbank-database:.*/hopegiversbloodbank-database:${BUILD_NUMBER}/g' manifests/database-statefulset.yaml"
+            }
+        }
+        stage('GitPush') {
+    steps {
+        sh 'git add manifests/*'
+        sh 'git commit -m "Updated image tags in Kubernetes manifests" || echo "No changes to commit"'
+        
+        withCredentials([usernamePassword(
+            credentialsId: 'github-secret',
+            usernameVariable: 'GIT_USER',
+            passwordVariable: 'GIT_PASS'
+        )]) {
+            sh '''
+                git push https://$GIT_USER:$GIT_PASS@github.com/manju9676/HopeGiversBloodBank.git HEAD:main
+            '''
+        }
+    }
+}
+
+    }
+}
