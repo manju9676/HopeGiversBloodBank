@@ -28,7 +28,7 @@ spec:
       #         cpu: "50m"
       containers:
         - name: frontend
-          image: manju9676/hopegiversbloodbank-frontend:9
+          image: manju9676/hopegiversbloodbank-frontend:10
           ports:
             - containerPort: 80
           startupProbe:
