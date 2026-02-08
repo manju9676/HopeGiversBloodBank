@@ -24,16 +24,13 @@ spec:
               memory: "512Mi"
               cpu: "500m"
             requests:
-              memory: "64Mi"
+              memory: "200Mi"
               cpu: "50m"
       containers:
         - name: frontend
           image: manju9676/hopegiversbloodbank-frontend:30
           ports:
             - containerPort: 80
-          envFrom:
-            - configMapRef:
-                name: app-config
           livenessProbe:
             httpGet:
               path: /
