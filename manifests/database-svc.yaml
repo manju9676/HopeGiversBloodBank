@@ -5,7 +5,7 @@ metadata:
   namespace: hopegiversbloodbank
 spec:
   selector:
-    app: mysql
+    app: database
   ports:    
     - port: 3306
   clusterIP: None  #Headless service for StatefulSet

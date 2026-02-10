@@ -8,11 +8,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: database
   template:
     metadata:
       labels:
-        app: mysql
+        app: database
     spec:
       securityContext:
         fsGroup: 999   # mysql group ID fixes volume permission issues
